@@ -12,6 +12,7 @@ const cors = require('./middleware/cors');
 
 // routes
 const checkins = require('./api/routes/checkins');
+const students = require('./api/routes/students');
 
 // EXPRESS  ============================================================================
 app.use(logger('dev'));
@@ -21,6 +22,7 @@ app.use(cookieParser());
 app.use(cors);
 
 app.use('/api/checkins',checkins);
+app.use('/api/students',students);
 
 // ERROR FALL THROUGH  =================================================================
 // catch 404 and forward to error handler
