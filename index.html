@@ -38,8 +38,10 @@
     console.log(formData)
     const http = new XMLHttpRequest();
     http.onreadystatechange = ($event) => {
-      console.log(http.status)
-      console.log(http.responseText)
+      if(http.readyState==4){
+        console.log(http.status)
+        console.log(http.responseText)
+      }
     }
     http.open("POST", "http://localhost:3000/api/checkins");
     http.send(formData)
