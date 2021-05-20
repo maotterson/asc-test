@@ -1,14 +1,9 @@
-var express = require('express');
-var router = express.Router();
+const express = require("express");
+const router = express.Router();
 
-/* POST users listing. */
-router.post('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+const CheckInsController = require('../controllers/checkins')
 
-/* GET users listing. */
-router.post('/', function(req, res, next) {
-  res.send('respond with a resource');
-});
+//Routes
+router.post("/", CheckInsController.checkins_create);
 
 module.exports = router;
