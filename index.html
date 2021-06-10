@@ -12,13 +12,21 @@
 </head>
 <body class="flex flex-col items-center">
   <form id="form" class="flex flex-col w-1/2 p-8 items-center shadow-md">
-    <div class="flex flex-col w-1/2 mb-4">
-      <label for="name">Name</label>
-      <input type="text" name="name" id="" class="border-black border-2 p-2">
-    </div>
     <div class="flex flex-col w-1/2 mb-8">
       <label for="name">Student Id</label>
       <input type="text" name="studentid" id="" class="border-black border-2 p-2">
+    </div>
+	<div class="flex flex-col w-1/2 mb-8">
+      <label for="name">Course</label>
+      <input type="text" name="courseid" id="" class="border-black border-2 p-2">
+    </div>
+	<div class="flex flex-col w-1/2 mb-8">
+      <label for="name">Tutor</label>
+      <input type="text" name="tutor" id="" class="border-black border-2 p-2">
+    </div>
+	<div class="flex flex-col w-1/2 mb-8">
+      <label for="name">Reason</label>
+      <input type="text" name="reason" id="" class="border-black border-2 p-2">
     </div>
     <div class="flex flex-col w-1/2">
       <input type="submit" value="Check In" id="" class="border-black border-2 p-2">
@@ -35,7 +43,13 @@
 
   form.addEventListener("formdata", ($event) => {
     const formData = $event.formData;
-    console.log(formData)
+	let object = {};
+    formData.forEach((value, key) => object[key] = value);
+    object["location"] = "Tutoring Center";
+	
+    const json = JSON.stringify(object);
+	console.log(json)
+	
     const http = new XMLHttpRequest();
     http.onreadystatechange = ($event) => {
       if(http.readyState==4){
@@ -44,7 +58,8 @@
       }
     }
     http.open("POST", "http://localhost:3000/api/checkins");
-    http.send(formData)
+    http.setRequestHeader('Content-Type','application/json')
+	http.send(json)
   })
 
 </script>

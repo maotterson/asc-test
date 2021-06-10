@@ -6,6 +6,17 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const app = express();
+const dotenv = require('dotenv').config();
+const mongoose = require("mongoose");
+
+//connect to db via mongoose
+mongoose.connect(
+  process.env.MONGO_CONNECTION_STRING, 
+  {
+    useMongoClient: true
+  }
+);
+
 
 // custom middleware
 const cors = require('./middleware/cors');
