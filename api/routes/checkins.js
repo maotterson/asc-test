@@ -1,7 +1,8 @@
 const express = require("express");
 const router = express.Router();
 
-const CheckInsController = require('../controllers/checkins')
+const CheckInsController = require('../controllers/checkins');
+const { route } = require("./students");
 
 //Routes
 router.post("/", CheckInsController.checkins_create);

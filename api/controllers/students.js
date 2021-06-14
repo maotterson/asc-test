@@ -6,3 +6,4 @@ exports.students_get_all = (req, res, next) => {
     message: "students get all"
   })
 };
+

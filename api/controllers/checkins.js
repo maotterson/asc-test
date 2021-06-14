@@ -36,7 +36,7 @@ exports.checkins_get = (req, res, next) => {
     console.log(results);
     res.status(200).json({
       message: "GET @ /users (retrieving all check-ins)",
-      body: results
+      data: results
     });
   })
   .catch(err => {
