@@ -12,7 +12,7 @@ A dedicated REST API written in node.js with express.js to manage requests for c
 
 3. Create a file called **.env** in the root directory, and add the following line:<br><br>
 MONGO_CONNECTION_STRING=""<br><br>
-In order to interact with a database, you will need to configure one; if you wish, message me and I either grant you access to the existing dummy database I am using or setup your own. Register an account at https://www.mongodb.com .
+In order to interact with a database, you will need to configure this connection string... note that it should be kept private to prevent unauthorized access. If you wish, message me and I will either grant you access to the existing dummy database I am using or setup your own. Register an account at https://www.mongodb.com .
 
 4. To run the server on your machine, use the command **node server.js**.
 
