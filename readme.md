@@ -10,8 +10,8 @@ A dedicated REST API written in node.js with express.js to manage requests for c
 
 2. In the root directory of the project repository, use the command **npm install** to download/install all dependencies.
 
-3. Create a file called **.env** in the root directory, and add the following line:<br>
-MONGO_CONNECTION_STRING=""<br>
+3. Create a file called **.env** in the root directory, and add the following line:<br><br>
+MONGO_CONNECTION_STRING=""<br><br>
 In order to interact with a database, you will need to configure one; if you wish, message me and I either grant you access to the existing dummy database I am using or setup your own. Register an account at https://www.mongodb.com .
 
 4. To run the server on your machine, use the command **node server.js**.
