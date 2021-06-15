@@ -52,21 +52,40 @@ exports.checkins_get = (req, res, next) => {
     start = req.query.start ? new Date(req.query.start) : ""
     end = req.query.end ? new Date(req.query.end) : ""
     date = req.query.date ? new Date(req.query.date) : ""
+    //start date filter
     if(start!="Invalid Date"&&start!=""){
       filter['checkInTime']={}; 
       filter['checkInTime']['$gte']=start;  
+      
+      //start and end date filter
+      if(end!="Invalid Date"&&end!=""){
+        filter['checkInTime']['$lte']=end;
+      }
     }
+    //end date filter
     else if(end!="Invalid Date"&&end!=""){
       filter['checkInTime']={}; 
       filter['checkInTime']['$lte']=end;
     }
-    if(end!="Invalid Date"&&end!=""){
-      filter['checkInTime']['$lte']=end;
-    }
-    //todo -> slice string to just date, removing the stored time
-    if(date!="Invalid Date"&&date!=""){
-      filter['checkInTime']={};
-      filter['checkInTime']['$eq']=date;
+    
+    //current date filter
+    if(req.query.date=="today"||(date!="Invalid Date"&&date!="")){
+      if(req.query.date=="today"){
+        let startdate = new Date();
+        startdate=Date.now();
+        filter['checkInTime']={};
+        filter['checkInTime']['$gte']=startdate;
+        let tomorrow = new Date();
+        tomorrow = tomorrow.setDate(startdate.getDate() + 1);
+        filter['checkInTime']['$lte']=tomorrow;
+      }
+      else{
+        filter['checkInTime']={};
+        filter['checkInTime']['$gte']=date;
+        let tomorrow = new Date();
+        tomorrow = tomorrow.setDate(date.getDate() + 1);
+        filter['checkInTime']['$lte']=tomorrow;
+      }
     }
   }
   catch (err){
