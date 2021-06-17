@@ -11,7 +11,7 @@ const mongoose = require("mongoose");
 
 //connect to db via mongoose
 mongoose.connect(
-  process.env.MONGO_CONNECTION_STRING, 
+  process.env.COSMOS_CONNECTION_STRING, 
   {
     useMongoClient: true
   }
