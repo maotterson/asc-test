@@ -1,14 +1,14 @@
 const mongoose = require("mongoose");
-const CheckIn = require("../models/checkin");
+const CheckIn = require("../models/checkin/checkin");
 
 //Create new check-in
 exports.checkins_create = (req, res, next) => {
   const checkIn = new CheckIn({
     _id: new mongoose.Types.ObjectId(),
-    studentId: req.body.studentid,
+    student: req.body.studentid,
     location: req.body.location,
     tutor: req.body.tutor,
-    courseId: req.body.courseid,
+    course: req.body.courseid,
     reason: req.body.reason,
     checkInTime: Date.now(),
     checkOutTime: null
