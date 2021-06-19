@@ -108,3 +108,11 @@ exports.checkins_get = (req, res, next) => {
     });
   });
 };
+
+exports.checkout = (req, res, next) => {
+  const studentId = req.params.studentid;
+  console.log(studentId)
+  res.status(201).json({
+    message: "checked out!!11"
+  });
+};
