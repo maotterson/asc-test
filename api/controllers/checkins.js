@@ -1,26 +1,48 @@
 const mongoose = require("mongoose");
+const checkin = require("../models/checkin/checkin");
 const CheckIn = require("../models/checkin/checkin");
 
 //Create new check-in
 exports.checkins_create = (req, res, next) => {
-  const checkIn = new CheckIn({
-    _id: new mongoose.Types.ObjectId(),
+  //verify that a current check-in doesn't already exist for that student
+  CheckIn.findOne({
     student: req.body.studentid,
-    location: req.body.location,
-    tutor: req.body.tutor,
-    course: req.body.courseid,
-    reason: req.body.reason,
-    checkInTime: Date.now(),
     checkOutTime: null
-  });
-
-  checkIn.save()
+  })
+  .exec()
   .then(result => {
-    console.log(result);
-    res.status(201).json({
-      message: "POST @ /users (creating new check-in)",
-      createdUser: result
-    });
+    if(result){
+      return res.status(401).json({
+        message: "Already checked-in"
+      });
+    }
+    else{
+      const checkIn = new CheckIn({
+        _id: new mongoose.Types.ObjectId(),
+        student: req.body.studentid,
+        location: req.body.location,
+        tutor: req.body.tutor,
+        course: req.body.courseid,
+        reason: req.body.reason,
+        checkInTime: Date.now(),
+        checkOutTime: null
+      });
+    
+      checkIn.save()
+      .then(result => {
+        console.log(result);
+        res.status(201).json({
+          message: "POST @ /users (creating new check-in)",
+          createdUser: result
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json({
+          error: err
+        });
+      });
+    }
   })
   .catch(err => {
     console.log(err);
