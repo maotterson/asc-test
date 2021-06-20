@@ -132,9 +132,33 @@ exports.checkins_get = (req, res, next) => {
 };
 
 exports.checkout = (req, res, next) => {
-  const studentId = req.params.studentid;
-  console.log(studentId)
-  res.status(201).json({
-    message: "checked out!!11"
+  const student = req.params.studentid;
+  CheckIn.findOne({
+    student: student,
+    checkOutTime: null
+  })
+  .exec()
+  .then(result => {
+    if(result)
+    {
+      const checkOutTime = Date.now();
+      result.checkOutTime = checkOutTime
+      console.log(result)
+      res.status(201).json({
+        message: "Successfully checked out",
+        time: checkOutTime
+      });
+    }
+    else{
+      res.status(401).json({
+        message: "Cannot check-out (no existing check-in)"
+      });
+    }
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500).json({
+      error: err
+    });
   });
 };
