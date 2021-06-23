@@ -144,9 +144,18 @@ exports.checkout = (req, res, next) => {
       const checkOutTime = Date.now();
       result.checkOutTime = checkOutTime
       console.log(result)
-      res.status(201).json({
-        message: "Successfully checked out",
-        time: checkOutTime
+      result.save().then(
+        result => {
+        res.status(201).json({
+          message: "Successfully checked out",
+          time: checkOutTime
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json({
+          error: err
+        });
       });
     }
     else{
