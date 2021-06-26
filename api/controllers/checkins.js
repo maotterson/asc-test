@@ -1,26 +1,47 @@
 const mongoose = require("mongoose");
-const CheckIn = require("../models/checkin");
+const CheckIn = require("../models/checkin/checkin");
 
 //Create new check-in
 exports.checkins_create = (req, res, next) => {
-  const checkIn = new CheckIn({
-    _id: new mongoose.Types.ObjectId(),
-    studentId: req.body.studentid,
-    location: req.body.location,
-    tutor: req.body.tutor,
-    courseId: req.body.courseid,
-    reason: req.body.reason,
-    checkInTime: Date.now(),
+  //verify that a current check-in doesn't already exist for that student
+  CheckIn.findOne({
+    student: req.body.studentid,
     checkOutTime: null
-  });
-
-  checkIn.save()
+  })
+  .exec()
   .then(result => {
-    console.log(result);
-    res.status(201).json({
-      message: "POST @ /users (creating new check-in)",
-      createdUser: result
-    });
+    if(result){
+      return res.status(401).json({
+        message: "Already checked-in"
+      });
+    }
+    else{
+      const checkIn = new CheckIn({
+        _id: new mongoose.Types.ObjectId(),
+        student: req.body.studentid,
+        location: req.body.location,
+        tutor: req.body.tutor,
+        course: req.body.courseid,
+        reason: req.body.reason,
+        checkInTime: Date.now(),
+        checkOutTime: null
+      });
+    
+      checkIn.save()
+      .then(result => {
+        console.log(result);
+        res.status(201).json({
+          message: "POST @ /users (creating new check-in)",
+          createdUser: result
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json({
+          error: err
+        });
+      });
+    }
   })
   .catch(err => {
     console.log(err);
@@ -100,6 +121,47 @@ exports.checkins_get = (req, res, next) => {
       message: "GET @ /users (retrieving check-ins)",
       data: results
     });
+  })
+  .catch(err => {
+    console.log(err);
+    res.status(500).json({
+      error: err
+    });
+  });
+};
+
+exports.checkout = (req, res, next) => {
+  const student = req.params.studentid;
+  CheckIn.findOne({
+    student: student,
+    checkOutTime: null
+  })
+  .exec()
+  .then(result => {
+    if(result)
+    {
+      const checkOutTime = Date.now();
+      result.checkOutTime = checkOutTime
+      console.log(result)
+      result.save().then(
+        result => {
+        res.status(201).json({
+          message: "Successfully checked out",
+          time: checkOutTime
+        });
+      })
+      .catch(err => {
+        console.log(err);
+        res.status(500).json({
+          error: err
+        });
+      });
+    }
+    else{
+      res.status(401).json({
+        message: "Cannot check-out (no existing check-in)"
+      });
+    }
   })
   .catch(err => {
     console.log(err);
