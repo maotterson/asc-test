@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const checkin = require("../models/checkin/checkin");
 const CheckIn = require("../models/checkin/checkin");
 
 //Create new check-in

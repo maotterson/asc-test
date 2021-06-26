@@ -11,7 +11,7 @@ const mongoose = require("mongoose");
 
 //connect to db via mongoose
 mongoose.connect(
-  process.env.MONGO_CONNECTION_STRING, 
+  process.env.COSMOS_CONNECTION_STRING, 
   {
     useMongoClient: true
   }
@@ -24,6 +24,7 @@ const cors = require('./middleware/cors');
 // routes
 const checkins = require('./api/routes/checkins');
 const students = require('./api/routes/students');
+const credentials = require('./api/routes/credentials');
 
 // EXPRESS  ============================================================================
 app.use(logger('dev'));
@@ -34,6 +35,7 @@ app.use(cors);
 
 app.use('/api/checkins',checkins);
 app.use('/api/students',students);
+app.use('/api/credentials',credentials)
 
 // ERROR FALL THROUGH  =================================================================
 // catch 404 and forward to error handler
