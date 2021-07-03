@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const CheckIn = require("../models/checkin/checkin");
+const { sendCheckInMessage } = require("../services/sendteamsmessage");
 
 //Create new check-in
 exports.checkins_create = (req, res, next) => {
@@ -30,10 +31,18 @@ exports.checkins_create = (req, res, next) => {
       checkIn.save()
       .then(result => {
         console.log(result);
-        res.status(201).json({
-          message: "POST @ /users (creating new check-in)",
-          createdUser: result
-        });
+        sendCheckInMessage(result).then(()=>{
+          res.status(201).json({
+            message: "POST @ /users (creating new check-in)",
+            createdUser: result
+          });
+        })
+        .catch(err => {
+          console.log(err);
+          res.status(500).json({
+            error: err
+          });
+        })
       })
       .catch(err => {
         console.log(err);
