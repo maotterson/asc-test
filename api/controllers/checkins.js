@@ -52,15 +52,6 @@ exports.checkins_create = (req, res, next) => {
 };
 
 //Get list of checkins
-//Optional query string parameters: [start, end, tutor, course, location]
-//Usage:
-//start=YYYY-MM-DD (filter by start date)
-//end=YYYY-MM-DD (filter by end date)
-//date=YYYY-MM-DD (filter by target date)
-//tutor=1234 (filter by tutor id)
-//course=CISS121 (filter by course id)
-//location=TC (filter by location)
-
 exports.checkins_get = (req, res, next) => {
   //filter for optional query string parameters
   const filter = {
@@ -130,10 +121,11 @@ exports.checkins_get = (req, res, next) => {
   });
 };
 
+//Checkout existing checkin
 exports.checkout = (req, res, next) => {
-  const student = req.params.studentid;
+  const checkinid = req.params.checkinid;
   CheckIn.findOne({
-    student: student,
+    _id: checkinid,
     checkOutTime: null
   })
   .exec()
@@ -159,7 +151,7 @@ exports.checkout = (req, res, next) => {
     }
     else{
       res.status(401).json({
-        message: "Cannot check-out (no existing check-in)"
+        message: "Cannot check-out (already checked-out)"
       });
     }
   })
