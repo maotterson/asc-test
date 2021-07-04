@@ -11,7 +11,7 @@ exports.sendCheckInMessage = async (body) => {
     "@type": "MessageCard",
     "themeColor": "0072C6",
     "title": "Tutoring Center: Student Incoming",
-    "text": `Incoming student for ${courseid}, ${tutorid}`,
+    "text": `Incoming student for ${courseid}, ${tutor}`,
     "potentialAction": [
         {
             "@type": "OpenUri",
