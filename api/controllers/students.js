@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 const Student = require("../models/student/student");
 const CheckIn = require("../models/checkin/checkin");
-const { findExistingCheckInByStudentId } = require("../services/newCheckInService");
-const { addCheckOutForCheckIn } = require("../services/checkOutService");
+const { findExistingCheckInByStudentId } = require("../services/check-in-service");
+const { addCheckOutForCheckIn } = require("../services/check-out-service");
 
 //Checkout existing checkin based on student id
 exports.checkout = async (req, res, next) => {

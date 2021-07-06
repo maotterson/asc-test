@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 const CheckIn = require("../models/checkin/checkin");
-const { addCheckOutForCheckIn } = require("../services/checkOutService");
-const { findExistingCheckInByStudentId, findExistingCheckInByCheckInId, createNewCheckIn } = require("../services/newCheckInService");
-const { sendCheckInMessage } = require("../services/teamsMessageService");
+const { addCheckOutForCheckIn } = require("../services/check-out-service");
+const { findExistingCheckInByStudentId, findExistingCheckInByCheckInId, createNewCheckIn } = require("../services/check-in-service");
+const { sendCheckInMessage } = require("../services/send-message-service");
 
 // Create new check-in
 exports.checkins_create = async (req, res, next) => {

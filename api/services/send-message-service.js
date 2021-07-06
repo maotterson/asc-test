@@ -1,7 +1,7 @@
 const dotenv = require('dotenv').config();
 const axios = require('axios');
-const { getCourseById } = require('./getCourseById');
-const { getTutorById } = require('./getTutorById');
+const { getCourseById } = require('./course-information-service');
+const { getTutorById } = require('./tutor-information-service');
 
 exports.sendCheckInMessage = async (body) => {
   const checkinid = body._id;
