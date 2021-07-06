@@ -1,4 +1,4 @@
-const Tutor = require("../models/tutor/tutor");
+const Tutor = require("../models/tutor");
 
 exports.getTutorById = async (tutorid) => {
   return await Tutor.findOne({

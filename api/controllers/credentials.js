@@ -1,8 +1,10 @@
 const mongoose = require("mongoose");
-const CheckIn = require("../models/checkin/checkin");
-const Student = require("../models/student/student");
-const { verifyStudentCredentials } = require("../services/student-credentials-service");
 const jwt = require("jsonwebtoken");
+
+const CheckIn = require("../models/checkin");
+const Student = require("../models/student");
+
+const { verifyStudentCredentials } = require("../services/student-credentials-service");
 const { generateCheckInToken } = require("../services/token-service");
 const { generateCheckinId } = require("../services/check-in-service");
 

@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
-const CheckIn = require("../models/checkin/checkin");
-const Student = require("../models/student/student")
+
+const CheckIn = require("../models/checkin");
+const Student = require("../models/student")
 
 exports.verifyStudentCredentials = async (studentId, lastName) => {
   const options = {

@@ -1,8 +1,9 @@
 const mongoose = require("mongoose");
-const CheckIn = require("../models/checkin/checkin");
-const Student = require("../models/student/student")
 const jwt = require("jsonwebtoken")
 const dotenv = require("dotenv")
+
+const CheckIn = require("../models/checkin");
+const Student = require("../models/student")
 
 exports.generateCheckInToken = (checkInId, expirationTime) => {
   const token = jwt.sign(checkInId, process.env.JWT_KEY, {expiresIn : expirationTime})

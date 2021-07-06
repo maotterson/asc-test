@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
-const CheckIn = require("../models/checkin/checkin");
+
+const CheckIn = require("../models/checkin");
+
 const { addCheckOutForCheckIn } = require("../services/check-out-service");
 const { findExistingCheckInByStudentId, findExistingCheckInByCheckInId, createNewCheckIn } = require("../services/check-in-service");
 const { sendCheckInMessage } = require("../services/send-message-service");

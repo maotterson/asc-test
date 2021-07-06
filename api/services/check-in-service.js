@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const CheckIn = require("../models/checkin/checkin");
+const CheckIn = require("../models/checkin");
 
 exports.generateCheckinId = () => {
   return new mongoose.Types.ObjectId()

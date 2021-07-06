@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
-const Student = require("../models/student/student");
-const CheckIn = require("../models/checkin/checkin");
+
+const Student = require("../models/student");
+const CheckIn = require("../models/checkin");
+
 const { findExistingCheckInByStudentId } = require("../services/check-in-service");
 const { addCheckOutForCheckIn } = require("../services/check-out-service");
 
