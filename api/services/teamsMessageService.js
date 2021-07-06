@@ -8,6 +8,7 @@ exports.sendCheckInMessage = async (body) => {
   const course = await getCourseById(body.course);
   const tutor = await getTutorById(body.tutor);
   const webhookURI = process.env.TEAMS_WEBHOOK_URI;
+  const selfURI = process.env.SELF_URI;
   const message = {
     "@context": "https://schema.org/extensions",
     "@type": "MessageCard",
@@ -21,7 +22,7 @@ exports.sendCheckInMessage = async (body) => {
             "targets": [
                 {
                     "os": "default",
-                    "uri": `http://localhost:3000/api/checkins/${checkinid}/checkout`
+                    "uri": `${selfURI}/api/checkins/${checkinid}/checkout`
                 }
             ]
         }
