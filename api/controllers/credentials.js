@@ -1,35 +1,30 @@
 const mongoose = require("mongoose");
 const CheckIn = require("../models/checkin/checkin");
-const Student = require("../models/student/student")
+const Student = require("../models/student/student");
+const { verifyStudentCredentials } = require("../services/studentCredentialsService");
 
-//Create new check-in
-exports.credentials_check = (req, res, next) => {
-  //verify that a current check-in doesn't already exist for that student
-  Student.findOne({
-    studentId: req.body.studentid,
-    lastName: req.body.lastName
-  })
-  .exec()
-  .then(result => {
-    if(result){
-      return res.status(200).json({
-        message: "Student found in database",
-        student: result
+// Check credentials for student
+exports.credentials_check = async (req, res, next) => {
+  try{
+    // verify that there is a matching student
+    const student = await verifyStudentCredentials(req.body.studentid, req.body.lastName)
 
-      });
+    // if no matching student
+    if(!student){
+      return res.status(401).json({
+        message: "Student not found in database"
+      })
     }
-    else{
-        return res.status(401).json({
-            message: "Student not found in database",
-            student: result
-    
-          });
-    }
-  })
-  .catch(err => {
-    console.log(err);
+    res.status(200).json({
+      message: "Student found in database",
+      student: student
+
+    })
+  }
+  catch (err) {
+    console.log(err)
     res.status(500).json({
       error: err
-    });
-  });
+    })
+  }
 };
