@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const CheckIn = require("../models/checkin/checkin");
 const { addCheckOutForCheckIn } = require("../services/checkOutService");
-const { findExistingCheckInByStudentId, createNewCheckIn } = require("../services/newCheckInService");
+const { findExistingCheckInByStudentId, findExistingCheckInByCheckInId, createNewCheckIn } = require("../services/newCheckInService");
 const { sendCheckInMessage } = require("../services/teamsMessageService");
 
 // Create new check-in
@@ -18,8 +18,8 @@ exports.checkins_create = async (req, res, next) => {
     // create new check-in
     const newCheckIn = await createNewCheckIn(req)
 
-    // send teams message
-    await sendCheckInMessage(newCheckIn)
+    // send teams message (works but commenting out to prevent sending a bunch of messages)
+    // await sendCheckInMessage(newCheckIn)
   
     //send 201 success
     res.status(201).json({

@@ -13,7 +13,8 @@ const mongoose = require("mongoose");
 mongoose.connect(
   process.env.COSMOS_CONNECTION_STRING, 
   {
-    useMongoClient: true
+    useNewUrlParser: true,
+    useUnifiedTopology: true
   }
 );
 

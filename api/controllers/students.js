@@ -13,7 +13,7 @@ exports.checkout = async (req, res, next) => {
         message: "Cannot check-out (no existing check-in)"
       });
     }
-    const updatedCheckIn = await addCheckOutForCheckIn(checkIn)
+    const updatedCheckIn = await addCheckOutForCheckIn(existingCheckIn)
     res.status(201).json({
       message: "Successfully checked out",
       body: updatedCheckIn
