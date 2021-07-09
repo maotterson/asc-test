@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
-
-module.exports = mongoose.Schema({
+const checkInSchema = mongoose.Schema({
   _id: mongoose.Schema.Types.ObjectId,
   student: {
     type: mongoose.Schema.Types.ObjectId, 
@@ -34,3 +33,5 @@ module.exports = mongoose.Schema({
     type: Date
   },
 });
+
+module.exports = mongoose.model('CheckIn', checkInSchema);

@@ -13,7 +13,8 @@ const mongoose = require("mongoose");
 mongoose.connect(
   process.env.COSMOS_CONNECTION_STRING, 
   {
-    useMongoClient: true
+    useNewUrlParser: true,
+    useUnifiedTopology: true
   }
 );
 
@@ -25,6 +26,7 @@ const cors = require('./middleware/cors');
 const checkins = require('./api/routes/checkins');
 const students = require('./api/routes/students');
 const credentials = require('./api/routes/credentials');
+const events = require('./api/routes/events');
 
 // EXPRESS  ============================================================================
 app.use(logger('dev'));
@@ -36,6 +38,7 @@ app.use(cors);
 app.use('/api/checkins',checkins);
 app.use('/api/students',students);
 app.use('/api/credentials',credentials)
+app.use('/api/events',events)
 
 // ERROR FALL THROUGH  =================================================================
 // catch 404 and forward to error handler
@@ -51,7 +54,7 @@ app.use((err, req, res, next) => {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.send("Invalid request.")
 });
 
 module.exports = app;

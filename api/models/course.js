@@ -1,9 +1,8 @@
 const mongoose = require('mongoose');
-
-module.exports = mongoose.Schema({
+const courseSchema = mongoose.Schema({
   _id: mongoose.Schema.Types.ObjectId,
   name: {
-    type: string, 
+    type: String, 
     required: true
   },
   subjectId: {
@@ -12,3 +11,5 @@ module.exports = mongoose.Schema({
     required: true
   }
 });
+
+module.exports = mongoose.model('Course', courseSchema);

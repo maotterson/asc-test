@@ -1,66 +1,70 @@
 const mongoose = require("mongoose");
-const CheckIn = require("../models/checkin/checkin");
 
-//Create new check-in
-exports.checkins_create = (req, res, next) => {
-  //verify that a current check-in doesn't already exist for that student
-  CheckIn.findOne({
-    student: req.body.studentid,
-    checkOutTime: null
-  })
-  .exec()
-  .then(result => {
-    if(result){
+const CheckIn = require("../models/checkin");
+
+const { addCheckOutForCheckIn } = require("../services/check-out-service");
+const { findExistingCheckInByStudentId, findExistingCheckInByCheckInId, createNewCheckIn } = require("../services/check-in-service");
+const { sendCheckInMessage } = require("../services/send-message-service");
+
+// Create new check-in
+exports.checkins_create = async (req, res, next) => {
+  try {
+    // verify that a current check-in doesn't already exist for that student
+    const existingCheckIn = await findExistingCheckInByStudentId(req.body.studentid)
+    if(existingCheckIn){
       return res.status(401).json({
         message: "Already checked-in"
       });
     }
-    else{
-      const checkIn = new CheckIn({
-        _id: new mongoose.Types.ObjectId(),
-        student: req.body.studentid,
-        location: req.body.location,
-        tutor: req.body.tutor,
-        course: req.body.courseid,
-        reason: req.body.reason,
-        checkInTime: Date.now(),
-        checkOutTime: null
-      });
-    
-      checkIn.save()
-      .then(result => {
-        console.log(result);
-        res.status(201).json({
-          message: "POST @ /users (creating new check-in)",
-          createdUser: result
-        });
-      })
-      .catch(err => {
-        console.log(err);
-        res.status(500).json({
-          error: err
-        });
-      });
-    }
-  })
-  .catch(err => {
+
+    // create new check-in
+    const newCheckIn = await createNewCheckIn(req)
+
+    // send teams message (works but commenting out to prevent sending a bunch of messages)
+    // await sendCheckInMessage(newCheckIn)
+  
+    //send 201 success
+    res.status(201).json({
+      message: "POST @ /users (creating new check-in)",
+      data: newCheckIn
+    });
+  }
+  catch(err){
     console.log(err);
     res.status(500).json({
       error: err
     });
-  });
+  }
 };
 
-//Get list of checkins
-//Optional query string parameters: [start, end, tutor, course, location]
-//Usage:
-//start=YYYY-MM-DD (filter by start date)
-//end=YYYY-MM-DD (filter by end date)
-//date=YYYY-MM-DD (filter by target date)
-//tutor=1234 (filter by tutor id)
-//course=CISS121 (filter by course id)
-//location=TC (filter by location)
+// Create check-out existing checkin
+exports.checkout = async (req, res, next) => {
+  try{
+    // check for existing check-in by id
+    const existingCheckIn = await findExistingCheckInByCheckInId(req.params.checkinid)
 
+    // no open check-in for that id
+    if(!existingCheckIn){
+      return res.status(401).json({
+        message: "Cannot check-out (already checked-out)"
+      });
+    }
+    const updatedCheckIn = await addCheckOutForCheckIn(existingCheckIn)
+    res.status(201).json({
+      message: "Successfully checked out",
+      body: updatedCheckIn
+    });
+  }
+  catch(err){
+    console.log(err);
+    res.status(500).json({
+      error: err
+    });
+  }
+};
+
+
+//Get list of checkins (todo)
 exports.checkins_get = (req, res, next) => {
   //filter for optional query string parameters
   const filter = {
@@ -121,47 +125,6 @@ exports.checkins_get = (req, res, next) => {
       message: "GET @ /users (retrieving check-ins)",
       data: results
     });
-  })
-  .catch(err => {
-    console.log(err);
-    res.status(500).json({
-      error: err
-    });
-  });
-};
-
-exports.checkout = (req, res, next) => {
-  const student = req.params.studentid;
-  CheckIn.findOne({
-    student: student,
-    checkOutTime: null
-  })
-  .exec()
-  .then(result => {
-    if(result)
-    {
-      const checkOutTime = Date.now();
-      result.checkOutTime = checkOutTime
-      console.log(result)
-      result.save().then(
-        result => {
-        res.status(201).json({
-          message: "Successfully checked out",
-          time: checkOutTime
-        });
-      })
-      .catch(err => {
-        console.log(err);
-        res.status(500).json({
-          error: err
-        });
-      });
-    }
-    else{
-      res.status(401).json({
-        message: "Cannot check-out (no existing check-in)"
-      });
-    }
   })
   .catch(err => {
     console.log(err);
