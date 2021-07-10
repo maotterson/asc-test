@@ -27,6 +27,7 @@ const checkins = require('./api/routes/checkins');
 const students = require('./api/routes/students');
 const credentials = require('./api/routes/credentials');
 const events = require('./api/routes/events');
+const availableTutors = require('./api/routes/availabletutors.js');
 
 // EXPRESS  ============================================================================
 app.use(logger('dev'));
@@ -38,6 +39,7 @@ app.use(cors);
 app.use('/api/checkins',checkins);
 app.use('/api/students',students);
 app.use('/api/credentials',credentials)
+app.use('/api/availableTutors',availableTutors)
 app.use('/api/events',events)
 
 // ERROR FALL THROUGH  =================================================================

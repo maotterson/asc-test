@@ -1,24 +1,24 @@
 const mongoose = require('mongoose');
-const tutorSchema = mongoose.Schema({
+const eventSchema = mongoose.Schema({
   _id: mongoose.Schema.Types.ObjectId,
-  firstname: {
+  startdate: {
     type: String, 
     required: true
   },
-  lastname: {
-    type: String, 
-    required: true
-  },
-  email: 
+  enddate: 
   {
     type: String, 
     required: true
   },
-  courses: {
+  tutor: {
     type: [mongoose.Schema.Types.ObjectId],
-    ref: 'Course',
+    ref: 'Tutor',
+    required: true
+  },
+  isAppointment: {
+    type: Boolean,
     required: true
   }
 });
 
-module.exports = mongoose.model('Tutor', tutorSchema);
+module.exports = mongoose.model('Event', eventSchema);
