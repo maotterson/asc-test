@@ -1,15 +1,22 @@
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
-const { getAvailableTutors } = require("../services/tutor-availability-service");
+const { getAvailableTutorEvents } = require('../services/tutor-information-service');
 
 
 // Get Available Tutors
 exports.get_available_tutors = async (req, res, next) => {
   try{
-    const tutors = await getAvailableTutors();
+    const tutorEvents = await getAvailableTutorEvents()
+    const availableTutors = [];
+
+    Object.keys(tutorEvents).forEach(subject => {
+      tutorEvents[subject].forEach(availableTutor => {
+        console.log(availableTutor)
+      })
+    })
 
     res.status(200).json({
-      message: tutors
+      tutors: availableTutors
     })
   }
   catch (err) {
