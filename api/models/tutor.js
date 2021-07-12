@@ -19,6 +19,9 @@ const tutorSchema = mongoose.Schema({
     type: [mongoose.Schema.Types.ObjectId],
     ref: 'Course',
     required: true
+  },
+  subject:{
+    type: String
   }
 });
 

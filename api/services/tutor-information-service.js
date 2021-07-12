@@ -1,6 +1,6 @@
 const Tutor = require("../models/tutor");
 const axios = require('axios');
-const dotenv = require("dotenv")
+const dotenv = require("dotenv");
 
 exports.getTutorById = async (tutorid) => {
   return await Tutor.findOne({
@@ -20,24 +20,43 @@ exports.getTutorByName = async (name) => {
   })
 }
 
-exports.getTutorsByNames = async (names) =>{
-  return await Tutor.find({
+exports.getTutorsByNames = async (namesWithSubjects) =>{
+  // lookup tutors using their names
+  const namesOnly = []
+  namesWithSubjects.forEach(nameWithSubject =>{
+    namesOnly.push(nameWithSubject.tutorName)
+  })
+
+  matchingTutors = await Tutor.find({
     name: {
-      $in : names
+      $in : namesOnly
     }
   })
+
+  //include the subject they are currently working
+  matchingTutors.forEach(tutor =>{
+    const nameWithSubject = namesWithSubjects.find(({tutorName})=> tutorName===tutor.name)
+    tutor.subject=nameWithSubject.subject
+  })
+
+  return matchingTutors
+
 }
 
-exports.extractTutorNamesFromEvents = (events) =>{
-  const tutorNames = []
+exports.extractTutorNamesWithSubjectsFromEvents = (events) =>{
+  const tutorNamesWithSubjects = []
   for(const tutorEvent of events){
     if(tutorEvent.subject){
+      const tutoringSubject = tutorEvent.tutoringSubject
       const subject = tutorEvent.subject
-      tutorName = subject.split('.')[0];
-      tutorNames.push(tutorName)
+      const tutorName = subject.split('.')[0];
+      tutorNamesWithSubjects.push({
+        tutorName: tutorName,
+        subject: tutoringSubject
+      })
     }
   }
-  return tutorNames
+  return tutorNamesWithSubjects
 }
 
 exports.getAvailableTutorEvents = async () => {
@@ -59,6 +78,7 @@ exports.getAvailableTutorEvents = async () => {
   //iterate over the subject calendars
   Object.keys(data).forEach(subject => {
     data[subject].forEach(availableTutor => {
+      availableTutor["tutoringSubject"] = subject
       availableTutorEvents.push(availableTutor)
     })
   })
