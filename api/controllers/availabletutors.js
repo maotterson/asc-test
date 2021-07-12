@@ -6,17 +6,14 @@ const { getAvailableTutorEvents } = require('../services/tutor-information-servi
 // Get Available Tutors
 exports.get_available_tutors = async (req, res, next) => {
   try{
+    //get the raw outlook event data
     const tutorEvents = await getAvailableTutorEvents()
-    const availableTutors = [];
 
-    Object.keys(tutorEvents).forEach(subject => {
-      tutorEvents[subject].forEach(availableTutor => {
-        console.log(availableTutor)
-      })
-    })
+    //transform the data to be useful for our application
+    
 
     res.status(200).json({
-      tutors: availableTutors
+      tutors: tutorEvents
     })
   }
   catch (err) {

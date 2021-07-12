@@ -19,7 +19,17 @@ exports.getAvailableTutorEvents = async () => {
   }
   
   //send post to location
-  const response = await axios.post(webhookURI, requestBody);
-  return response.data
-  
+  const response = await axios.post(webhookURI, requestBody)
+  const data = response.data
+  const availableTutorEvents = []
+
+  //iterate over the subject calendars
+  Object.keys(data).forEach(subject => {
+    data[subject].forEach(availableTutor => {
+      availableTutorEvents.push(availableTutor)
+    })
+  })
+
+  return availableTutorEvents
+
 };
