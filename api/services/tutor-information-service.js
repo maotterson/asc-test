@@ -20,6 +20,26 @@ exports.getTutorByName = async (name) => {
   })
 }
 
+exports.getTutorsByNames = async (names) =>{
+  return await Tutor.find({
+    name: {
+      $in : names
+    }
+  })
+}
+
+exports.extractTutorNamesFromEvents = (events) =>{
+  const tutorNames = []
+  for(const tutorEvent of events){
+    if(tutorEvent.subject){
+      const subject = tutorEvent.subject
+      tutorName = subject.split('.')[0];
+      tutorNames.push(tutorName)
+    }
+  }
+  return tutorNames
+}
+
 exports.getAvailableTutorEvents = async () => {
   const currentTimeInt = Date.now()
   const currentTime = new Date(Date.now());
