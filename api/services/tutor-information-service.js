@@ -8,6 +8,12 @@ exports.getTutorById = async (tutorid) => {
   });
 };
 
+exports.getTutorByEmail = async (email) => {
+  return await Tutor.findOne({
+    email: email
+  });
+};
+
 exports.getAvailableTutorEvents = async () => {
   const currentTime = Date.now()
   const webhookURI = process.env.TUTORSCHEDULE_OUTLOOK_FLOW_URI;
