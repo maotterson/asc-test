@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
-const { getAvailableTutorEvents, getTutorByEmail } = require('../services/tutor-information-service');
+const { getAvailableTutorEvents, getTutorByName } = require('../services/tutor-information-service');
 
 
 // Get Available Tutors
@@ -8,20 +8,21 @@ exports.get_available_tutors = async (req, res, next) => {
   try{
     //get the raw outlook event data
     const tutorEvents = await getAvailableTutorEvents()
+    const tutors = []
 
     //transform the data to be useful for our application
-    tutorEvents.forEach(async tutorEvent => {
-      if(tutorEvent.requiredAttendees){
-        let email = tutorEvent.requiredAttendees
-        email = email.split(';')[0];
-        console.log(email)
-        const tutor = await getTutorByEmail(email)
-        console.log(tutor)
+    for(const tutorEvent of tutorEvents){
+      if(tutorEvent.subject){
+        const subject = tutorEvent.subject
+        tutorName = subject.split('.')[0];
+        const tutor = await getTutorByName(tutorName)
+        tutors.push(tutor)
       }
-    })
+    }
+    console.log(tutors)
 
     res.status(200).json({
-      tutors: tutorEvents
+      tutors: tutors
     })
   }
   catch (err) {

@@ -14,14 +14,21 @@ exports.getTutorByEmail = async (email) => {
   });
 };
 
+exports.getTutorByName = async (name) => {
+  return await Tutor.findOne({
+    name:name
+  })
+}
+
 exports.getAvailableTutorEvents = async () => {
-  const currentTime = Date.now()
+  const currentTimeInt = Date.now()
+  const currentTime = new Date(Date.now());
   const webhookURI = process.env.TUTORSCHEDULE_OUTLOOK_FLOW_URI;
   
   //todo: replace with current time
   const requestBody = {
-    starttime: "2021-07-08T19:00:00+00:00",
-    endtime: "2021-07-08T19:00:00+00:00"
+    starttime: currentTime,
+    endtime: currentTime
   }
   
   //send post to location

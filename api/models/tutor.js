@@ -3,11 +3,12 @@ const tutorSchema = mongoose.Schema({
   _id: mongoose.Schema.Types.ObjectId,
   firstname: {
     type: String, 
-    required: true
   },
   lastname: {
     type: String, 
-    required: true
+  },
+  name:{
+    type: String
   },
   email: 
   {
