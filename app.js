@@ -22,7 +22,10 @@ mongoose.connect(
 // custom middleware
 const cors = require('./middleware/cors');
 
-// routes
+// page routes
+const pages = require('./pages/routes');
+
+// api routes
 const checkins = require('./api/routes/checkins');
 const students = require('./api/routes/students');
 const credentials = require('./api/routes/credentials');
@@ -41,6 +44,9 @@ app.use('/api/students',students);
 app.use('/api/credentials',credentials)
 app.use('/api/availableTutors',availableTutors)
 app.use('/api/events',events)
+
+app.use('/',pages);
+app.use(express.static('pages/public'));
 
 // ERROR FALL THROUGH  =================================================================
 // catch 404 and forward to error handler
