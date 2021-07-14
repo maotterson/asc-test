@@ -45,8 +45,9 @@ app.use('/api/credentials',credentials)
 app.use('/api/availableTutors',availableTutors)
 app.use('/api/events',events)
 
-app.use('/',pages);
-app.use(express.static('pages/public'));
+// If we opt to serve pages from our api, maybe not the best solution
+//app.use('/',pages);
+//app.use(express.static('pages/public'));
 
 // ERROR FALL THROUGH  =================================================================
 // catch 404 and forward to error handler
