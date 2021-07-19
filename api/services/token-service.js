@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken")
 const dotenv = require("dotenv")
+const crypto = require("crypto");
 
 const CheckIn = require("../models/checkin");
 const Student = require("../models/student");
@@ -21,15 +22,19 @@ exports.generateTutorAvailToken = (tutorId, expirationTime) => {
   return token
 };
 
+exports.generateTutorAvailabilityCodeForDatabase = () => {
+  const token = crypto.randomBytes(256).toString('hex');
+  console.log(token)
+  return token
+}
+
 exports.isValidTutorToken = async (token) => {
   return jwt.verify(token,process.env.JWT_TUTOR_KEY, async (err, decoded) => {
     if(err){
       return false
     }
     const inserttoken = await usedtoken.find({}).exec()
-    console.log(inserttoken)
     const hasTokenBeenUsed = await this.isBlackListedToken(token)
-    console.log(hasTokenBeenUsed)
     if(hasTokenBeenUsed){
       return false
     }
