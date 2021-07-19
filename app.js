@@ -22,11 +22,17 @@ mongoose.connect(
 // custom middleware
 const cors = require('./middleware/cors');
 
-// routes
+// page routes
+const pages = require('./pages/routes');
+
+// api routes
 const checkins = require('./api/routes/checkins');
 const students = require('./api/routes/students');
 const credentials = require('./api/routes/credentials');
 const events = require('./api/routes/events');
+const availableTutors = require('./api/routes/availabletutors.js');
+const checkEmail = require('./api/routes/checkemail');
+const tutors = require('./api/routes/tutors');
 
 // EXPRESS  ============================================================================
 app.use(logger('dev'));
@@ -38,7 +44,14 @@ app.use(cors);
 app.use('/api/checkins',checkins);
 app.use('/api/students',students);
 app.use('/api/credentials',credentials)
+app.use('/api/availableTutors',availableTutors)
+app.use('/api/tutors',tutors)
 app.use('/api/events',events)
+app.use('/api/checkEmail',checkEmail)
+
+// If we opt to serve pages from our api, maybe not the best solution
+app.use('/',pages);
+app.use(express.static('pages/public'));
 
 // ERROR FALL THROUGH  =================================================================
 // catch 404 and forward to error handler
