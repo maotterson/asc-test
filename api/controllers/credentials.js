@@ -23,7 +23,6 @@ exports.credentials_check = async (req, res, next) => {
     
     // generate a check-in id
     const checkInId = generateCheckinId()
-    console.log(checkInId)
     
     // generate auth token for generated check-in id
     const tokenDuration = 300; // 300 seconds
@@ -31,7 +30,8 @@ exports.credentials_check = async (req, res, next) => {
 
     res.status(200).json({
       message: "Student found in database",
-      student: student
+      student: student,
+      token: token
     })
   }
   catch (err) {
