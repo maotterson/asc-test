@@ -21,7 +21,7 @@ exports.checkins_create = async (req, res, next) => {
     const newCheckIn = await createNewCheckIn(req)
 
     // send teams message (works but commenting out to prevent sending a bunch of messages)
-    await sendCheckInMessage(newCheckIn)
+    //await sendCheckInMessage(newCheckIn)
   
     //send 201 success
     res.status(201).json({
