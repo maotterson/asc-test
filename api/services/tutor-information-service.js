@@ -28,14 +28,14 @@ exports.getTutorsByNames = async (namesWithSubjects) =>{
   })
 
   matchingTutors = await Tutor.find({
-    name: {
+    scheduleName: {
       $in : namesOnly
     }
   })
 
   //include the subject they are currently working
   matchingTutors.forEach(tutor =>{
-    const nameWithSubject = namesWithSubjects.find(({tutorName})=> tutorName===tutor.name)
+    const nameWithSubject = namesWithSubjects.find(({tutorName})=> tutorName===tutor.scheduleName)
     tutor.subject=nameWithSubject.subject
   })
 

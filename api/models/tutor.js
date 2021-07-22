@@ -10,6 +10,9 @@ const tutorSchema = mongoose.Schema({
   name:{
     type: String
   },
+  scheduleName:{
+    type: String
+  },
   email: 
   {
     type: String, 
